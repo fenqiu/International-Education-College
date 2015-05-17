@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 默认的视图主题 -->
+	<constant name="struts.ui.theme" value="simple" />
+	<constant value="3000000" name="struts.multipart.maxSize" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.i18n.encoding" value="gbk"></constant>
+	<package name="systemlogin" namespace="/" extends="struts-default">
+		<action name="main" class="loginAction">
+		    <interceptor-ref name="defaultStack"></interceptor-ref>
+			<!-- <interceptor-ref name="token"></interceptor-ref>		 -->	
+			<result name="loginsuc">/WEB-INF/index.jsp</result>
+			<result name="loginfail">/login.jsp</result>
+		</action>
+		<action name="loginout" class="userAction" method="loginOut">
+			<result name="success" type="redirectAction">main</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action> 
+		<!-- <action name="mains" class="stuloginAction">
+		    <interceptor-ref name="defaultStack"></interceptor-ref>
+		    <result name="loginsuccess">/WEB-INF/index.jsp</result>
+			<result name="loginfails">/stulogin.jsp</result>
+		</action> -->	 
+	</package>
+    <package name="system" namespace="/system" extends="struts-default">
+		<interceptors>
+			<interceptor name="permission" class="com.tjpu.action.PermissionInterceptor" />
+			<interceptor-stack name="permissionStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="permission" />
+			</interceptor-stack>
+		</interceptors>
+		<global-results>
+			<result name="permissionfail">/login.jsp</result>
+		</global-results>		
+			
+		<action name="User_*" class="userAction" method="{1}">
+		    <result name="changepwd">/WEB-INF/manage/changpwd.jsp</result>	
+			<result name="success" type="redirectAction">/login.jsp</result>
+			<result name="userlist">/WEB-INF/manage/userlist.jsp</result>	
+			<result name="useradd">/WEB-INF/manage/useradd.jsp</result>	
+			<result name="rolelist">/WEB-INF/manage/rolelist.jsp</result>
+			<result name="roleadd">/WEB-INF/manage/roleadd.jsp</result>	
+		</action>
+		<action name="Stu_*" class="studentAction" method="{1}">
+			<result name="stulist">/WEB-INF/student/studentlist.jsp</result>
+			<result name="changepwd">/WEB-INF/student/stuchangpwd.jsp</result>	
+			<result name="stuadd">/WEB-INF/student/studentadd.jsp</result>
+			<result name="stubaseinfo">/WEB-INF/student/stubaseinfo.jsp</result>
+		</action>
+		<action name="Class_*" class="classAction" method="{1}">
+		    <result name="classlist">/WEB-INF/student/classlist.jsp</result>
+			<result name="classadd">/WEB-INF/student/classadd.jsp</result>
+			<result name="classstulist">/WEB-INF/student/classstulist.jsp</result>
+			<result name="clsroomload">/WEB-INF/student/clsroomload.jsp</result>
+				
+			<result name="courselist">/WEB-INF/course/courselist.jsp</result>
+			<result name="courseadd">/WEB-INF/course/courseadd.jsp</result>
+			
+			<result name="classroomlist">/WEB-INF/student/classroomlist.jsp</result>
+			<result name="roomadd">/WEB-INF/student/classroomadd.jsp</result>
+		</action>
+	</package>
+</struts>    
